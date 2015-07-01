@@ -13,9 +13,53 @@ for ($j = 1; $j < 10; $j++) {
     <meta charset="utf-8">
     <title>转盘</title>
 </head>
+<!--core css-->
 <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <link href="/css/base.css" rel="stylesheet">
 <body>
+<!--QR-->
+<div id="qrcode-wrap">
+    <img src="http://www.dooforex.com/wp-content/uploads/2015/06/wechat-qrcode.png">
+
+    <p>扫一扫，及时获取我们的最新活动与资讯 :D</p>
+</div>
+<!--Dialog Model-->
+31
+<div class="modal fade" id="user_login">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">请先选择奖金录入的账号</h4>
+            </div>
+            <div class="modal-body">
+                <select id="select_account" name="login" class="form-control">
+                    <?php foreach ($query->result() as $row) { ?>
+                        <option value="<?php echo $row->LOGIN; ?>">
+                            <?php echo $row->LOGIN; ?>
+                        </option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="confirm_btn">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Info Modal-->
+<div class="modal fade" id="send_info" style="top:30%;">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h4 class="modal-title">您中奖啦!</h4>
+            </div>
+            <div class="modal-body">
+                <p id="info" class="text-danger"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="header"></div>
 <div class="box">
     <div class="description-wrap">
@@ -33,7 +77,9 @@ for ($j = 1; $j < 10; $j++) {
             <li>客户在参加本次抽奖活动的同时，抽奖所得的赠金将不享有参加其他优惠活动的权利；</li>
             <li>抽奖赠金不可直接提取，在交易信用额的状态下，客户可以提取通过交易信用额产生的盈利；</li>
         </ol>
-        <p><a href="http://www.dooforex.com/?page_id=612">查看详细 >></a></p>
+        <button onclick='window.open("http://www.dooforex.com/?page_id=612","_blank")' class="btn btn-primary btn-sm">
+            查看详细 >>
+        </button>
     </div>
     <div class="ly-plate">
         <div class="rotate-bg" onClick="javascript:$('#t').val(1);$('#lotteryBtn').click();">
@@ -46,7 +92,7 @@ for ($j = 1; $j < 10; $j++) {
             </div>
         </div>
     </div>
-    <div class="count-wrap"><h2>剩余抽奖次数：<span class="count error"><?php isset($count)?$count:''; ?></span>次</h2>
+    <div class="count-wrap"><h2>剩余抽奖次数：<span class="count error"><?php isset($count) ? $count : ''; ?></span>次</h2>
     </div>
 
 </div>
@@ -57,13 +103,13 @@ for ($j = 1; $j < 10; $j++) {
             <li><?php echo $value; ?></li>
         <?php } ?>
     </ul>
-
 </div>
 </body>
-
+<!--core js-->
 <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
 <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script src="/js/jQueryRotate.2.2.js"></script>
 <script src="/js/jquery.easing.min.js"></script>
 <script src="/js/main.js"></script>
+
 </html>
