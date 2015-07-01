@@ -1,9 +1,19 @@
 <!doctype html>
+<?php
+$this->db2 = $this->load->database('mt4', true);
+$this->db2->where('EMAIL', $this->userdetail->email);
+$query = $this->db2->get('MT4_USERS');
+$this->load->library('encrypt');
+for ($j = 1; $j < 10; $j++) {
+    $reward[$j] = $this->encrypt->encode($j . time());
+}
+?>
 <html>
 <head>
     <meta charset="utf-8">
     <title>转盘</title>
 </head>
+<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <link href="/css/base.css" rel="stylesheet">
 <body>
 <div class="header"></div>
@@ -11,9 +21,11 @@
     <div class="description-wrap">
         <h2>参与资格</h2>
         <br>
+
         <p>所有在活动期间开户并入金激活交易账户的新客户均可参加抽奖（新客户即活动前未有在 dooForex
             开立过账户或未曾拥有交易账号的客户），同名客户再开立新账户，不享有参加这次抽奖的机会。每个客户根据入金金额可享有不同的抽奖次数。</p>
         <br>
+
         <h2>活动规则</h2>
         <br>
         <ol>
@@ -34,15 +46,23 @@
             </div>
         </div>
     </div>
-    <div class="count-wrap"><h2>剩余抽奖次数：<span class="count error">5</span>次</h2>
+    <div class="count-wrap"><h2>剩余抽奖次数：<span class="count error"><?php isset($count)?$count:''; ?></span>次</h2>
     </div>
 
 </div>
 <div id="mask"></div>
 <div id="data" style='display:none;'>
+    <ul>
+        <?php foreach ($reward as $value) { ?>
+            <li><?php echo $value; ?></li>
+        <?php } ?>
+    </ul>
+
 </div>
 </body>
-<script src="/js/jquery-1.7.2.min.js"></script>
+
+<script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script src="/js/jQueryRotate.2.2.js"></script>
 <script src="/js/jquery.easing.min.js"></script>
 <script src="/js/main.js"></script>
