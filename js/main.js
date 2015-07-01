@@ -19,7 +19,7 @@ $(function () {
     (function(){
         $.ajax({
             type:'POST',
-            url:'/huodong/get_count',
+            url:'/lottery/get_count',
             dataType:'json',
             success:function(ret){
                 $count_node.html(ret.info);
@@ -66,7 +66,7 @@ $(function () {
     var dataBack = function (awards, totalCount,login) {
         $.ajax({
             type:'POST',
-            url:'/huodong/turnround',
+            url:'/lottery/turnround',
             dataType:'json',
             data:{'awards':awards,'count':totalCount,'login':login},
             error:function(ret){
@@ -86,6 +86,14 @@ $(function () {
     //Rotate function
     var rotateFunc = function (awards, angle, text) {  //awards:奖项，angle:奖项对应的角度
         console.log(flag);
+        /**
+         * 页面存在BUG:当抽奖次数为0后,
+         * 用户通过F12直接修改span里面的次数,还能继续抽奖,并正确提示抽奖结果
+         * 虽然后台已做出过滤,但前台还未修复该BUG
+         * 定义flag,只有当flag为true时,正常转动抽奖
+         * 为false时,则将次数重置为0,并提示用户'没有抽奖次数'
+         * 然后用animateTo:0停止转盘的转动
+         */
         if(flag){
             console.log('------------111-------fbug----');
             $("#lotteryBtn").rotate({

@@ -68,16 +68,108 @@ class Lottery extends CI_Controller
                 'email' => $email,
                 'count' => $count
             );
-            $this->db->insert('tbLottery',$data);
-        }else if($isFlag == 1){
+            $this->db->insert('tbLottery', $data);
+        } else if ($isFlag == 1) {
             $prev = $result->row()->count;
             $count = $count + $prev;
             $data = array(
-                'count'=>$count
+                'count' => $count
             );
-            $this->db->where('email',$email);
-            $this->db->update('tbLottery',$data);
+            $this->db->where('email', $email);
+            $this->db->update('tbLottery', $data);
         }
-        $this->load->view('round',$data);
+        $this->load->view('round', $data);
+    }
+
+    /*获取抽奖次数*/
+    public function get_count()
+    {
+        $email = $this->session->userdata('user_data');
+        $this->db->where('email', $email);
+        $count = $this->db->get('tbLottery')->row()->count;
+        $ret = array('info' => $count);
+        echo json_encode($ret);
+    }
+
+    public function turnround()
+    {
+        $ret = array();
+        $email = $this->session->userdata('user_data');
+        $tmp = $this->input->post();
+        $str = $tmp['awards'];//奖项等级
+        $count = $tmp['count'];//抽奖次数
+        $login = $tmp['login'];//账号
+
+        $reward = $this->encrypt->decode($str);
+        $reward = substr($reward, 0, 1);//解析ajax提交的加密'奖项',获取奖项等级(1-9)
+        switch ($reward) {//对应奖金,单位$
+            case 1:
+                $reward = 8;
+                break;
+            case 2:
+                $reward = 18;
+                break;
+            case 3:
+                $reward = 28;
+                break;
+            case 4:
+                $reward = 48;
+                break;
+            case 5:
+                $reward = 88;
+                break;
+            case 6:
+                $reward = 188;
+                break;
+            case 7:
+                $reward = 288;
+                break;
+            case 8:
+                $reward = 488;
+                break;
+            case 9:
+                $reward = 888;
+                break;
+            default:
+                $reward = 0;
+                break;
+        }
+        if (isset($count)) {
+            $this->db->where('email', $email);
+            $result = $this->db->get('tbLottery');
+            if ($result->num_rows == 1) {
+                $count = (int)$result->row()->count;
+//				$tmp = ($count <= 5 && ($reward != 8 || $reward != 18 || $reward !=28));
+//				var_dump($tmp);exit();
+                if ($count >= 1) {
+                    //检验前端ajax提交过来的抽奖次数$count和奖金$reward的对应关系
+                    //如果不是与规则想对应的关系,则用户私自修改了数据,exit()掉
+                    if ($count <= 5 && ($reward != 8 && $reward != 18 && $reward != 28)) {
+                        exit('超时!');
+                    } else if ($count == 6 && ($reward != 8 && $reward != 18 && $reward != 48)) {
+                        exit('超时!');
+                    } else if ($count >= 7 && $count <= 9 && ($reward != 8 && $reward != 18 && $reward != 28 && $reward != 48 && $reward != 88)) {
+                        exit('超时!');
+                    } else if ($count >= 10 && ($reward != 8 && $reward != 18 && $reward != 28 && $reward != 48 && $reward != 88 && $reward != 288 && $reward != 488 && $reward != 888)) {
+                        exit('超时!');
+                    }
+                    $count--;
+                    $this->db->where('email', $email);
+                    $data = array('count' => $count);
+                    $this->db->update('tbLottery', $data);
+                    $data = array(
+                        'reward' => $reward,
+                        'email' => $email,
+                        'applytime' => time(),
+                        'login' => $login
+                    );
+                    $this->db->insert('tbReward', $data);
+                    $ret = array('info' => $count, 'status' => 0);
+                } else {
+                    $ret = array('info' => '您没有抽奖次数了~!', 'status' => 1);
+                }
+            }
+        }
+        echo json_encode($ret);
     }
 }
