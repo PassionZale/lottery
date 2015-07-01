@@ -1,0 +1,96 @@
+* {
+    padding: 0;
+    margin: 0
+}
+body {
+    height: 1000px;
+    background: linear-gradient(to bottom right,#FFE194,#FDDB67)
+}
+p{
+    line-height: 1.8em;
+}
+.header{
+    height: 400px;
+    background: url(/imges/bg.png) no-repeat;
+}
+#mask{
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: none;
+    /*background-color: white;   */
+    -moz-opacity: 0.7;
+    opacity:.70;
+    filter: alpha(opacity=70);
+}
+.ly-plate {
+    position: relative;
+    width: 445px;height: 447px;
+    left: 450px; top: -450px;
+}
+
+.rotate-bg a {
+    width: 129px;
+    height: 160px;
+    background: url(/imges/zhen_01.png);
+    position: absolute;
+    top: 125px;
+    left: 155px;
+    z-index: 8;
+    cursor: pointer;
+}
+
+.rotate-bg a:hover {
+    background: url(/imges/zhen_02.png);
+}
+
+.ly-plate div.lottery-star {
+    width: 352px;
+    height: 352px;
+    position: absolute;
+    top: 45px;
+    left: 45px;
+    /*text-indent:-999em;
+    overflow:hidden;
+    background:url(rotate-static.png);
+    -webkit-transform:rotate(0deg);*/
+    outline: none
+
+}
+
+.ly-plate div.lottery-star #lotteryBtn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    *left: -107px
+}
+
+.error {
+    color: red;
+}
+.box{
+    width: 960px;height: 600px;
+    position: absolute;
+    left: 50%; top: 350px;
+    margin-left: -480px;
+    background: url(/imges/box-bg.png);
+}
+.count-wrap{
+    width: 15em;height: 2em;
+    position: relative;
+    left: 550px; top: -420px;
+    text-align: center;
+    background: #FFF710;
+    box-shadow: 5px 5px 0 #EA292A;
+}
+.description-wrap{
+    width: 380px;
+    position: relative;
+    left: 40px;top: 70px;
+}
+.description-wrap ol li{
+    line-height: 1.8em;
+}
